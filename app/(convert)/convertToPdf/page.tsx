@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import jsPDF from 'jspdf';
 
 export default function ImageToPDFConverter() {
-  const [images, setImages] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]); // New state for image previews
-  const [pdf, setPdf] = useState(null);
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]); // New state for image previews
+  const [pdf, setPdf] = useState<jsPDF | null>(null);
 
-  const handleFileChange = (e) => {
-    const selectedImages = Array.from(e.target.files);
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedImages = e.target.files ? Array.from(e.target.files) : [];
     setImages(selectedImages);
 
     const previews = selectedImages.map(image => {
@@ -27,7 +27,7 @@ export default function ImageToPDFConverter() {
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = () => {
-        doc.addImage(reader.result, 'JPEG', 10, 10, 190, 0);
+        doc.addImage(reader.result as string, 'JPEG', 10, 10, 190, 0);
         if (index === images.length - 1) {
           setPdf(doc);
         }
