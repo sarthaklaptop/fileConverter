@@ -3,6 +3,8 @@
 import { ChangeEvent, useState } from 'react';
 import jsPDF from 'jspdf';
 
+export const runtime = "edge"; 
+
 export default function ImageToPDFConverter() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]); // New state for image previews
